@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h1>{{ user.username }}'s Wishlist</h1>
+<hr>
+<ol>
+	{% for wish in wishes %}
+	<li><a href={{ wish.link }}>{{ wish.title }}</a>
+		{% if wish.note %}
+			<ul>
+				<li>{{ wish.note }}
+			</ul>
+		{% endif %}
+	{% endfor %}
+</ol>
+{% if current_user.is_authenticated %}
+<form action="" method="post" novalidate>
+	{{ form.hidden_tag() }}
+	<p>
+	{{ form.title.label }}<br>
+	{{ form.title(size=64) }}
+	{% for error in form.title.errors %}
+	<span style="color: red;">[{{ error }}]</span>
+	{% endfor %}
+	</p>
+	<p>
+	{{ form.note.label }}<br>
+	{{ form.note(size=100) }}
+	{% for error in form.note.errors %}
+	<span style="color: red;">[{{ error }}]</span>
+	{% endfor %}
+	</p>
+	<p>
+	{{ form.link.label }}<br>
+	{{ form.link(size=100) }}
+	{% for error in form.link.errors %}
+	<span style="color: red;">[{{ error }}]</span>
+	{% endfor %}
+	</p>
+	<p>{{ form.submit() }}</p>
+</form>
+{% endif %}
+{% endblock %}
+

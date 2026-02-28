@@ -35,8 +35,9 @@ def load_user(id):
 class Wish(db.Model):
     id: so.Mapped[int] = so.mapped_column(primary_key=True)
     user_id: so.Mapped[int] = so.mapped_column(sa.ForeignKey(User.id), index=True)
-    title: so.Mapped[str] = so.mapped_column(sa.String(256))
-    note: so.Mapped[str] = so.mapped_column(sa.String(1024))
+    title: so.Mapped[str] = so.mapped_column(sa.String(256), nullable=False)
+    note: so.Mapped[str] = so.mapped_column(sa.String(1024), nullable=True)
+    link: so.Mapped[str] = so.mapped_column(sa.String(4096), nullable=True)
     rank: so.Mapped[int] = so.mapped_column(sa.Integer)
     timestamp: so.Mapped[datetime] = so.mapped_column(
         index=True, default=lambda: datetime.now(timezone.utc)
