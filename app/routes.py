@@ -1,5 +1,5 @@
 from flask import render_template, flash, redirect, request, url_for
-from flask_login import current_user, login_user, logout_user
+from flask_login import current_user, login_required, login_user, logout_user
 from app import app, db
 from app.forms import LoginForm, WishForm
 from app.models import User, Wish
@@ -62,13 +62,18 @@ def wishlist(username):
 
 
 @app.route("/wishlist_items", methods=["POST"])
-def reorder_items(user):
-    new_order = request.form.getlist("item")
+@login_required
+def reorder_items():
+    ordered_ids = request.form.getlist("item")
 
-    for rank, item_id in enumerate(new_order, start=1):
-        item = user.wishes.select().where(Wish.rank == rank)
-        item.rank = item_id
+    wishes = Wish.query.filter(
+        Wish.id.in_(ordered_ids), Wish.user_id == current_user.id
+    ).all()
+
+    wishes_by_id = {wish.id: wish for wish in wishes}
+
+    for index, wish_id in enumerate(ordered_ids, start=1):
+        wishes_by_id[int(wish_id)].rank = index
 
     db.session.commit()
-
     return ""

@@ -3,11 +3,11 @@
 {% block content %}
 <h1>{{ user.username }}'s Wishlist</h1>
 <hr>
-<form class="sortable" hxpost="/wishlist_items" hx-trigger="end">
+<form class="sortable" hx-post="/wishlist_items" hx-trigger="end" hx-swap="none">
 	<div class="htmx-indicator">Updating...</div>
 
 	{% for wish in wishes %}
-	<div class="py-4"><input type='hidden' name='item' value='{{ loop.index0 + 1 }}'/><a href={{ wish.link }}>{{ wish.title }}</a></div>
+	<div class="py-4"><input type='hidden' name='item' value='{{ wish.id }}'/><a href={{ wish.link }}>{{ wish.title }}</a></div>
 	{% endfor %}
 </form>
 

@@ -9,8 +9,8 @@
 	</head>
 	<body>
 		<div>
-			<span class="text-2xl">Simple Wishlist</span>
-			<a href="{{ url_for('index') }} class="text-2xl">Home</a>
+			<span class="">Simple Wishlist</span>
+			<a href="{{ url_for('index') }}">Home</a>
 			{% if current_user.is_anonymous %}
 			<a href="{{ url_for('login') }}">Login</a>
 			{% else %}
