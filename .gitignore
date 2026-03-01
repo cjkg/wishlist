@@ -220,3 +220,6 @@ config.py
 
 # Database
 *.db
+
+# Node modules
+node_modules/

@@ -59,3 +59,16 @@ def wishlist(username):
         db.session.commit()
 
     return render_template("wishlist.html", user=user, wishes=wishes, form=form)
+
+
+@app.route("/wishlist_items", methods=["POST"])
+def reorder_items(user):
+    new_order = request.form.getlist("item")
+
+    for rank, item_id in enumerate(new_order, start=1):
+        item = user.wishes.select().where(Wish.rank == rank)
+        item.rank = item_id
+
+    db.session.commit()
+
+    return ""

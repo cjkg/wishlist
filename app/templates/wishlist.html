@@ -3,16 +3,15 @@
 {% block content %}
 <h1>{{ user.username }}'s Wishlist</h1>
 <hr>
-<ol>
+<form class="sortable" hxpost="/wishlist_items" hx-trigger="end">
+	<div class="htmx-indicator">Updating...</div>
+
 	{% for wish in wishes %}
-	<li><a href={{ wish.link }}>{{ wish.title }}</a>
-		{% if wish.note %}
-			<ul>
-				<li>{{ wish.note }}
-			</ul>
-		{% endif %}
+	<div class="py-4"><input type='hidden' name='item' value='{{ loop.index0 + 1 }}'/><a href={{ wish.link }}>{{ wish.title }}</a></div>
 	{% endfor %}
-</ol>
+</form>
+
+
 {% if current_user.is_authenticated %}
 <form action="" method="post" novalidate>
 	{{ form.hidden_tag() }}
@@ -40,5 +39,10 @@
 	<p>{{ form.submit() }}</p>
 </form>
 {% endif %}
+
+<script src="{{ url_for('static', filename='node_modules/sortablejs/Sortable.js') }}"></script>
+<script src="{{ url_for('static', filename='js/htmx.js') }}"></script>
+<script src="{{ url_for('static', filename='js/sorting.js') }}"></script>
+
 {% endblock %}
 
