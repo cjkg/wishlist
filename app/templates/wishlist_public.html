@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h1>{{ user.username }}'s Wishlist</h1>
+<hr>
+
+<ol>
+	{% for wish in wishes %}
+	<li><a href={{ wish.link }}>{{ wish.title }}</a> 
+		<form action="{{ url_for("purchase_wish", user_id=user.id, wish_id=wish.id) }}"
+		      method="post"
+		      class="inline">
+			<button type="submit">Purchase</button>
+			{% endfor %}
+</ol>
+
+{% endblock %}
+
+

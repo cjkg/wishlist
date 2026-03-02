@@ -7,7 +7,8 @@
 	<div class="htmx-indicator">Updating...</div>
 
 	{% for wish in wishes %}
-	<div class="py-4"><input type='hidden' name='item' value='{{ wish.id }}'/><a href={{ wish.link }}>{{ wish.title }}</a></div>
+		<div class="py-4">
+			<input type='hidden' name='item' value='{{ wish.id }}'/><a href={{ wish.link }}>{{ wish.title }}</a></div>
 	{% endfor %}
 </form>
 

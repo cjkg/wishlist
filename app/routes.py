@@ -42,23 +42,31 @@ def login():
 @app.route("/wishlist/<username>", methods=["GET", "POST"])
 def wishlist(username):
     user = db.first_or_404(sa.select(User).where(User.username == username))
-    stmt = user.wishes.select().order_by(Wish.rank)
-    wishes = db.session.scalars(stmt).all()
+    if current_user.is_authenticated and current_user.username == username:
+        stmt = user.wishes.select().order_by(Wish.rank)
+        wishes = db.session.scalars(stmt).all()
 
-    form = WishForm()
-    if form.validate_on_submit():
-        wish = Wish(
-            user_id=user.id,
-            title=form.title.data.strip(),
-            note=form.note.data.strip(),
-            link=form.link.data.strip(),
-            rank=1,
-            purchased=False,
+        form = WishForm()
+        if form.validate_on_submit():
+            wish = Wish(
+                user_id=user.id,
+                title=form.title.data.strip(),
+                note=form.note.data.strip(),
+                link=form.link.data.strip(),
+                rank=1,
+                purchased=False,
+            )
+            db.session.add(wish)
+            db.session.commit()
+
+        return render_template(
+            "wishlist_user.html", user=user, wishes=wishes, form=form
         )
-        db.session.add(wish)
-        db.session.commit()
+    else:
+        stmt = user.wishes.select().where(Wish.purchased.is_(False)).order_by(Wish.rank)
 
-    return render_template("wishlist.html", user=user, wishes=wishes, form=form)
+        wishes = db.session.scalars(stmt).all()
+        return render_template("wishlist_public.html", user=user, wishes=wishes)
 
 
 @app.route("/wishlist_items", methods=["POST"])
@@ -72,8 +80,21 @@ def reorder_items():
 
     wishes_by_id = {wish.id: wish for wish in wishes}
 
-    for index, wish_id in enumerate(ordered_ids, start=1):
-        wishes_by_id[int(wish_id)].rank = index
+    for index, wish_id in enumerate(ordered_ids):
+        wish = wishes_by_id.get(int(wish_id))
+        if wish:
+            wish.rank = index
 
     db.session.commit()
-    return ""
+
+    return "", 204
+
+
+@app.route("/purchase/<int:user_id>/<int:wish_id>", methods=["POST"])
+def purchase_wish(user_id, wish_id):
+    wish = Wish.query.filter_by(id=wish_id, user_id=user_id).first_or_404()
+
+    wish.purchased = True
+    db.session.commit()
+
+    return "", 204
