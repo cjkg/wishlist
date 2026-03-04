@@ -4,16 +4,21 @@
 <h1>{{ user.username }}'s Wishlist</h1>
 <hr>
 
-<ol>
+<table>
+	<tbody>
 	{% for wish in wishes %}
-	<li><a href={{ wish.link }}>{{ wish.title }}</a> 
-		<form action="{{ url_for("purchase_wish", user_id=user.id, wish_id=wish.id) }}"
-		      method="post"
-		      class="inline">
-			<button type="submit">Purchase</button>
-			{% endfor %}
-</ol>
+	<tr>
+
+		<td><a href={{ wish.link }}>{{ wish.title }}</a> </td>
+		<td>
+			<form action="{{ url_for("purchase_wish", user_id=user.id, wish_id=wish.id) }}"
+			      method="delete"
+			      class="inline">
+				<button class="bg-purple-500 hover:bg-purple-700 text-white font-bold py-2 px-2 rounded" type="submit">Mark as Purchased</button>
+			</form>
+		</td>
+	{% endfor %}
+	</tbody>
+</table>
 
 {% endblock %}
-
-

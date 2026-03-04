@@ -98,3 +98,21 @@ def purchase_wish(user_id, wish_id):
     db.session.commit()
 
     return "", 204
+
+
+@app.route("/delete_wish/<int:wish_id>", methods=["DELETE"])
+@login_required
+def delete_wish(wish_id):
+    wish = Wish.query.filter_by(id=wish_id, user_id=current_user.id).first_or_404()
+
+    deleted_rank = wish.rank
+
+    db.session.delete(wish)
+
+    Wish.query.filter(Wish.user_id == current_user.id, Wish.rank > deleted_rank).update(
+        {Wish.rank: Wish.rank - 1}, synchronize_session=False
+    )
+
+    db.session.commit()
+
+    return "", 200
