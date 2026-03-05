@@ -35,7 +35,14 @@
 
 	{% for wish in wishes %}
 	<div id="wish-{{ wish.id }}" class="py-4">
-		<input type='hidden' name='item' value='{{ wish.id }}'/><a href={{ wish.link }}>{{ wish.title }}</a>
+		<input type='hidden' name='item' value='{{ wish.id }}'/>
+
+		{% if wish.link %}
+			<a href={{ wish.link }}>{{ wish.title }}</a>
+		{% else %}
+			{{ wish.title }}
+		{% endif %}
+
 		<button
 			hx-delete="{{ url_for('delete_wish', wish_id=wish.id) }}"
 			hx-target="#wish-{{ wish.id }}"
