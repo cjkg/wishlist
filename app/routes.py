@@ -102,7 +102,7 @@ def purchase_wish(user_id, wish_id):
     wish.purchased = True
     db.session.commit()
 
-    return "", 204
+    return render_template("wishes/_public_wish_row.html", wish=wish, user=wish.owner)
 
 
 @app.route("/delete_wish/<int:wish_id>", methods=["DELETE"])
