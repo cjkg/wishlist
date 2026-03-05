@@ -56,6 +56,11 @@ def wishlist(username):
                 rank=1,
                 purchased=False,
             )
+
+            Wish.query.filter(Wish.user_id == current_user.id).update(
+                {Wish.rank: Wish.rank + 1}, synchronize_session=False
+            )
+
             db.session.add(wish)
             db.session.commit()
 
