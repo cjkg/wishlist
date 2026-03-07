@@ -1,0 +1,54 @@
+<div class="fixed inset-0 bg-black/40 flex items-center justify-center z-50">
+
+    <div class="bg-white rounded-xl shadow-lg w-full max-w-lg p-6 relative">
+	
+	<div class="flex justify-between items-center mb-4">
+	    <h2 class="text-lg font-semibold">Add a Wish</h2>
+	    <button
+		hx-get=""
+		hx-target="#modal"
+		hx-swap="innerHTML"
+		class="text-gray-400 hover:text-gray-700 text-2xl leading-none"
+	    >
+		×
+	    </button>
+	</div>
+
+        <form
+            hx-post="{{ url_for('create_wish') }}"
+            hx-target="#wishlist"
+            hx-swap="afterbegin"
+	    hx-on::after-request="document.getElementById('modal').innerHTML=''"
+            class="space-y-4"
+        >
+            {{ form.hidden_tag() }}
+
+            <div>
+                <label class="block text-sm font-medium text-gray-700">
+                    {{ form.title.label.text }}
+                </label>
+                {{ form.title(class="mt-1 w-full border border-gray-300 rounded-md px-3 py-2 focus:ring-2 focus:ring-purple-500 focus:outline-none") }}
+            </div>
+
+            <div>
+                <label class="block text-sm font-medium text-gray-700">
+                    {{ form.note.label.text }}
+                </label>
+                {{ form.note(class="mt-1 w-full border border-gray-300 rounded-md px-3 py-2 focus:ring-2 focus:ring-purple-500 focus:outline-none") }}
+            </div>
+
+            <div>
+                <label class="block text-sm font-medium text-gray-700">
+                    {{ form.link.label.text }}
+                </label>
+                {{ form.link(class="mt-1 w-full border border-gray-300 rounded-md px-3 py-2 focus:ring-2 focus:ring-purple-500 focus:outline-none") }}
+            </div>
+
+            <div class="pt-2 flex justify-end">
+                {{ form.submit(class="bg-purple-600 hover:bg-purple-700 text-white font-semibold px-4 py-2 rounded-md") }}
+            </div>
+
+        </form>
+    </div>
+
+</div>

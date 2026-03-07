@@ -1,0 +1,51 @@
+<div id="wish-{{ wish.id }}"
+     class="group bg-white border border-gray-200 rounded-xl p-4 flex items-start gap-4
+            shadow-sm hover:shadow-md transition">
+
+    <input type="hidden" name="item" value="{{ wish.id }}"/>
+
+    <div class="cursor-move text-gray-400 text-lg">☰</div>
+
+    <div class="flex-1">
+        <div class="flex items-center gap-2">
+
+            {% if wish.link %}
+            <a href="{{ wish.link }}"
+               class="font-semibold text-gray-900 hover:text-blue-600">
+                {{ wish.title }}
+            </a>
+            {% else %}
+            <span class="font-semibold text-gray-900">
+                {{ wish.title }}
+            </span>
+            {% endif %}
+
+        </div>
+
+        {% if wish.note %}
+        <p class="text-sm text-gray-500 mt-1">
+            {{ wish.note }}
+        </p>
+        {% endif %}
+    </div>
+
+        <button
+            hx-get="{{ url_for('peek_wish', wish_id=wish.id) }}"
+            hx-target="this"
+            hx-swap="outerHTML"
+            hx-confirm="Are you sure you want to peek?"
+            class="text-sm bg-purple-600 hover:bg-purple-800 text-white px-3 py-1 rounded-md">
+            Peek
+        </button>
+
+        <button
+            hx-delete="{{ url_for('delete_wish', wish_id=wish.id) }}"
+            hx-target="#wish-{{ wish.id }}"
+            hx-swap="delete"
+            hx-confirm="Delete this wish?"
+            class="text-sm bg-red-600 hover:bg-red-800 text-white px-3 py-1 rounded-md">
+            Delete
+        </button>
+
+</div>
+

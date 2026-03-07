@@ -39,34 +39,14 @@ def login():
     return render_template("login.html", title="Sign In", form=form)
 
 
-@app.route("/wishlist/<username>", methods=["GET", "POST"])
+@app.route("/wishlist/<username>")
 def wishlist(username):
     user = db.first_or_404(sa.select(User).where(User.username == username))
     if current_user.is_authenticated and current_user.username == username:
         stmt = user.wishes.select().order_by(Wish.rank)
         wishes = db.session.scalars(stmt).all()
 
-        form = WishForm()
-        if form.validate_on_submit():
-            wish = Wish(
-                user_id=user.id,
-                title=form.title.data.strip(),
-                note=form.note.data.strip(),
-                link=form.link.data.strip(),
-                rank=1,
-                purchased=False,
-            )
-
-            Wish.query.filter(Wish.user_id == current_user.id).update(
-                {Wish.rank: Wish.rank + 1}, synchronize_session=False
-            )
-
-            db.session.add(wish)
-            db.session.commit()
-
-        return render_template(
-            "wishlist_user.html", user=user, wishes=wishes, form=form
-        )
+        return render_template("wishlist_user.html", user=user, wishes=wishes)
     else:
         stmt = user.wishes.select().where(Wish.purchased.is_(False)).order_by(Wish.rank)
 
@@ -93,6 +73,40 @@ def reorder_items():
     db.session.commit()
 
     return "", 204
+
+
+@app.route("/wishes/new")
+@login_required
+def new_wish_modal():
+    form = WishForm()
+    return render_template("wishes/_add_wish_modal.html", form=form)
+
+
+@app.route("/create_wish", methods=["POST"])
+@login_required
+def create_wish():
+    form = WishForm()
+
+    if form.validate_on_submit():
+        wish = Wish(
+            title=form.title.data.strip(),
+            note=form.note.data.strip(),
+            link=form.link.data.strip(),
+            user_id=current_user.id,
+            rank=1,
+            purchased=False,
+        )
+
+        Wish.query.filter(Wish.user_id == current_user.id).update(
+            {Wish.rank: Wish.rank + 1}, synchronize_session=False
+        )
+
+        db.session.add(wish)
+        db.session.commit()
+
+        return render_template("wishes/_user_wish_row.html", wish=wish)
+
+    return "", 400
 
 
 @app.route("/purchase/<int:user_id>/<int:wish_id>", methods=["POST"])

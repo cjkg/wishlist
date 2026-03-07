@@ -1,70 +1,31 @@
 {% extends "base.html" %}
 
 {% block content %}
-<h1>{{ user.username }}'s Wishlist</h1>
-<hr>
+<h1 class="text-xl font-semibold mb-4">Edit Wishlist</h1>
 
-<form action="" method="post" novalidate>
-	{{ form.hidden_tag() }}
-	<p>
-	{{ form.title.label }}<br>
-	{{ form.title(size=64) }}
-	{% for error in form.title.errors %}
-	<span style="color: red;">[{{ error }}]</span>
-	{% endfor %}
-	</p>
-	<p>
-	{{ form.note.label }}<br>
-	{{ form.note(size=100) }}
-	{% for error in form.note.errors %}
-	<span style="color: red;">[{{ error }}]</span>
-	{% endfor %}
-	</p>
-	<p>
-	{{ form.link.label }}<br>
-	{{ form.link(size=100) }}
-	{% for error in form.link.errors %}
-	<span style="color: red;">[{{ error }}]</span>
-	{% endfor %}
-	</p>
-	<p>{{ form.submit() }}</p>
-</form>
+<div>
+	<h2 class="text-lg font-semibold mb-4">Your Wishlist</h2>
 
-<form class="sortable" hx-post="/wishlist_items" hx-trigger="end" hx-swap="none">
-	<div class="htmx-indicator">Updating...</div>
-
-	{% for wish in wishes %}
-	<div id="wish-{{ wish.id }}" class="py-4">
-		<input type='hidden' name='item' value='{{ wish.id }}'/>
-
-		{% if wish.link %}
-		<a href={{ wish.link }}>{{ wish.title }}</a>
-		{% else %}
-		{{ wish.title }}
-		{% endif %}
-
+	<div class="w-full mb-6 flex justify-end px-4">
 		<button
-			hx-delete="{{ url_for('delete_wish', wish_id=wish.id) }}"
-			hx-target="#wish-{{ wish.id }}"
-			hx-swap="outerHTML"
-			hx-confirm="Are you sure you want to delete this wish?"
-			class="bg-red-400 hover:bg-red-700 text-white font-bold p-2 rounded">
-		Delete
-		</button>
-		<button
-			hx-get="{{ url_for('peek_wish', wish_id=wish.id) }}"
-			hx-target="this"
-			hx-swap="outerHTML"
-			hx-confirm="Are you sure you want to peek at whether this gift has been purchased yet?"
-			class="bg-purple-500 hover:bg-purple-700 text-white font-bold p-2 rounded">
-		Peek
+				hx-get="{{ url_for('new_wish_modal') }}"
+				hx-target="#modal"
+				hx-swap="innerHTML"
+				class="bg-purple-600 hover:bg-purple-700 text-white font-semibold px-4 py-2 rounded-md shadow">
+			+ Add to Wishlist
 		</button>
 	</div>
-	{% endfor %}
+</div>
+<form id="wishlist" class="sortable space-y-4" hx-post="/wishlist_items" hx-trigger="end" hx-swap="none">
+{% for wish in wishes %}
+	{% include "wishes/_user_wish_row.html" %}
+{% endfor %}
 </form>
 
-<script src="{{ url_for('static', filename='node_modules/sortablejs/Sortable.js') }}"></script>
+<div id="modal"></div>
+		
 <script src="{{ url_for('static', filename='js/htmx.js') }}"></script>
+<script src="{{ url_for('static', filename='node_modules/sortablejs/Sortable.js') }}"></script>
 <script src="{{ url_for('static', filename='js/sorting.js') }}"></script>
 
 {% endblock %}
