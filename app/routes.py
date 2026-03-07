@@ -131,3 +131,11 @@ def delete_wish(wish_id):
     db.session.commit()
 
     return "", 200
+
+
+@app.route("/peek_wish/<int:wish_id>", methods=["GET"])
+@login_required
+def peek_wish(wish_id):
+    wish = Wish.query.filter_by(id=wish_id, user_id=current_user.id).first_or_404()
+
+    return render_template("wishes/_wish_status.html", wish=wish)

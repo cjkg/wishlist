@@ -44,12 +44,20 @@
 		{% endif %}
 
 		<button
-				hx-delete="{{ url_for('delete_wish', wish_id=wish.id) }}"
-				hx-target="#wish-{{ wish.id }}"
-				hx-swap="outerHTML"
-				hx-confirm="Are you sure you want to delete this wish?"
-				class="bg-red-400 hover:bg-red-700 text-white font-bold p-2 rounded">
-			Delete
+			hx-delete="{{ url_for('delete_wish', wish_id=wish.id) }}"
+			hx-target="#wish-{{ wish.id }}"
+			hx-swap="outerHTML"
+			hx-confirm="Are you sure you want to delete this wish?"
+			class="bg-red-400 hover:bg-red-700 text-white font-bold p-2 rounded">
+		Delete
+		</button>
+		<button
+			hx-get="{{ url_for('peek_wish', wish_id=wish.id) }}"
+			hx-target="this"
+			hx-swap="outerHTML"
+			hx-confirm="Are you sure you want to peek at whether this gift has been purchased yet?"
+			class="bg-purple-500 hover:bg-purple-700 text-white font-bold p-2 rounded">
+		Peek
 		</button>
 	</div>
 	{% endfor %}
