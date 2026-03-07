@@ -17,12 +17,23 @@
             hx-target="closest tr"
             hx-swap="outerHTML"
 	    hx-confirm="Are you sure you want to mark this wishlist item as purchased?"
-            class="bg-purple-500 hover:bg-purple-700 text-white font-bold py-2 px-2 rounded"
+            class="bg-purple-500 hover:bg-purple-700 text-white font-bold p-2 rounded"
         >
             Mark as Purchased
         </button>
         {% else %}
-        <span class="text-green-600 font-semibold">Purchased</span>
+	<div>
+		<span class="text-green-600 font-semibold">Purchased</span>
+		<button
+			type="button"
+			hx-post="{{ url_for('unpurchase_wish', user_id=user.id, wish_id=wish.id) }}"
+			hx-target="closest tr"
+			hx-swap="outerHTML"
+			class="bg-purple-500 hover:bg-purple-700 text-white font-bold p-2 rounded"
+		>
+			Undo
+		</button>
+	</div>
         {% endif %}
     </td>
 </tr>

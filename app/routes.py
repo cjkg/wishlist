@@ -105,6 +105,16 @@ def purchase_wish(user_id, wish_id):
     return render_template("wishes/_public_wish_row.html", wish=wish, user=wish.owner)
 
 
+@app.route("/unpurchase/<int:user_id>/<int:wish_id>", methods=["POST"])
+def unpurchase_wish(user_id, wish_id):
+    wish = Wish.query.filter_by(id=wish_id, user_id=user_id).first_or_404()
+
+    wish.purchased = False
+    db.session.commit()
+
+    return render_template("wishes/_public_wish_row.html", wish=wish, user=wish.owner)
+
+
 @app.route("/delete_wish/<int:wish_id>", methods=["DELETE"])
 @login_required
 def delete_wish(wish_id):
