@@ -1,20 +1,16 @@
 {% extends "base.html" %}
 
 {% block content %}
-<h1 class="text-xl font-semibold mb-4">Edit Wishlist</h1>
-
-<div>
-	<h2 class="text-lg font-semibold mb-4">Your Wishlist</h2>
-
-	<div class="w-full mb-6 flex justify-end px-4">
-		<button
-				hx-get="{{ url_for('new_wish_modal') }}"
-				hx-target="#modal"
-				hx-swap="innerHTML"
-				class="bg-purple-600 hover:bg-purple-700 text-white font-semibold px-4 py-2 rounded-md shadow">
-			+ Add to Wishlist
-		</button>
-	</div>
+<div class="w-full mb-4 flex justify-between pt-8 px-4">
+	<h1 class="text-lg">Your Wishlist</h1>
+	<hr>
+	<button
+		hx-get="{{ url_for('new_wish_modal') }}"
+		hx-target="#modal"
+		hx-swap="innerHTML"
+		class="bg-purple-600 hover:bg-purple-700 text-white font-semibold px-4 py-2 rounded-md shadow">
+		+ Add to Wishlist
+	</button>
 </div>
 <form id="wishlist" class="sortable space-y-4" hx-post="/wishlist_items" hx-trigger="end" hx-swap="none">
 {% for wish in wishes %}
@@ -23,7 +19,7 @@
 </form>
 
 <div id="modal"></div>
-		
+
 <script src="{{ url_for('static', filename='js/htmx.js') }}"></script>
 <script src="{{ url_for('static', filename='node_modules/sortablejs/Sortable.js') }}"></script>
 <script src="{{ url_for('static', filename='js/sorting.js') }}"></script>
