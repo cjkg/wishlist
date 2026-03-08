@@ -5,33 +5,50 @@
 		<meta name="viewport" content="width=device-width, initial-scale=1.0">
 		<link rel="stylesheet" href="{{url_for('static',filename='dist/output.css')}}">
 	</head>
-		<title>Simple Wishlist</title>
+	<title>Simple Wishlist</title>
 	</head>
-	<body>
-		<div class="flex w-full">
-			<div class="flex w-full justify-start p-4 text-purple-500 text-bold text-xl">
-				Simple Wishlist
+	<body class="bg-gray-50">
+
+		<nav class="bg-white border-b border-gray-200">
+			<div class="max-w-5xl mx-auto px-4 py-3 flex items-center justify-between">
+
+				<div class="text-purple-600 font-semibold text-lg">
+					simple wishlist
+				</div>
+
+				<div class="flex items-center gap-4 text-sm">
+					<a href="{{ url_for('index') }}"
+					   class="text-gray-700 hover:text-purple-600">
+						home
+					</a>
+
+					{% if current_user.is_anonymous %}
+					<a href="{{ url_for('login') }}"
+					   class="text-gray-700 hover:text-purple-600">
+						login
+					</a>
+					{% else %}
+					<a href="{{ url_for('logout') }}"
+					   class="text-gray-700 hover:text-purple-600">
+						logout
+					</a>
+					{% endif %}
+				</div>
+
 			</div>
-			<div class="flex w-full justify-end p-4">
-				<a href="{{ url_for('index') }}">Home</a>
-				{% if current_user.is_anonymous %}
-				<a href="{{ url_for('login') }}">Login</a>
-				{% else %}
-				<a href="{{ url_for('logout') }}">Logout</a>
-				{% endif %}
-			</div>
-		</div>
+		</nav>
+
 		{% with messages = get_flashed_messages() %}
 		{% if messages %}
-		<ul>
+		<div class="max-w-5xl mx-auto px-4 mt-4">
 			{% for message in messages %}
-			<li>{{ message }}</li>
+			<div class="bg-white border border-gray-200 rounded-md px-4 py-2 text-sm shadow-sm">
+				{{ message }}
+			</div>
 			{% endfor %}
-		</ul>
+		</div>
 		{% endif %}
 		{% endwith %}
-		{% block content %}{% endblock %}
 
-		<script src="{{ url_for('static', filename='js/htmx.js') }}"></script>
-	</body>
+		{% block content %}{% endblock %}
 </html>
