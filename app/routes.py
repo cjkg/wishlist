@@ -82,6 +82,21 @@ def new_wish_modal():
     return render_template("wishes/_add_wish_modal.html", form=form)
 
 
+@app.route("/wishes/<int:wish_id>", methods=["POST"])
+@login_required
+def update_wish(wish_id):
+    wish = Wish.query.filter_by(id=wish_id, user_id=current_user.id).first_or_404()
+    form = WishForm()
+
+    if form.validate_on_submit():
+        wish.title = form.title.data
+        wish.note = form.note.data
+        wish.link = form.link.data
+        db.session.commit()
+
+    return render_template("wishes/_user_wish_row.html", wish=wish)
+
+
 @app.route("/create_wish", methods=["POST"])
 @login_required
 def create_wish():
@@ -127,6 +142,14 @@ def unpurchase_wish(user_id, wish_id):
     db.session.commit()
 
     return render_template("wishes/_public_wish_row.html", wish=wish, user=wish.owner)
+
+
+@app.route("/edit_wish/<int:wish_id>")
+@login_required
+def edit_wish(wish_id):
+    wish = Wish.query.filter_by(id=wish_id, user_id=current_user.id).first_or_404()
+    form = WishForm(obj=wish)
+    return render_template("wishes/_edit_wish_row.html", form=form, wish=wish)
 
 
 @app.route("/delete_wish/<int:wish_id>", methods=["DELETE"])
