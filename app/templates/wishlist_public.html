@@ -1,15 +1,14 @@
 {% extends "base.html" %}
 
 {% block content %}
-<h1>{{ user.username }}'s Wishlist</h1>
-<hr>
+<div class="w-full mb-4 flex justify-between pt-8 px-4">
+	<h1 class="text-lg">{{ user.username }}'s Wishlist</h1>
+</div>
 
-<table>
-	<tbody>
-	{% for wish in wishes %}
+<div>
+ 	{% for wish in wishes %}
 		{% include "wishes/_public_wish_row.html" %}
 	{% endfor %}
-	</tbody>
-</table>
+</div>
 
 {% endblock %}
