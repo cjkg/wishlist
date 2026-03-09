@@ -33,9 +33,16 @@ class WishForm(FlaskForm):
             DataRequired(),
             Length(min=1, max=256, message="Wish must be between 1 and 256 characters"),
         ],
+        render_kw={"placeholder": "Capital Vol. 1, by Karl Marx"},
     )
-    note = StringField("Note", validators=[Length(max=1024)])
+    note = StringField(
+        "Note",
+        validators=[Length(max=1024)],
+        render_kw={"placeholder": "A book I'd really like!"},
+    )
     link = StringField(
-        "Link", validators=[Length(max=4096, message="Link must be less than 4096")]
+        "Link",
+        validators=[Length(max=4096, message="Link must be less than 4096")],
+        render_kw={"placeholder": "https://www.example.com"},
     )
     submit = SubmitField("Add to Wishlist")
