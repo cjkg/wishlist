@@ -10,7 +10,8 @@ from urllib.parse import urlsplit
 @app.route("/index")
 @app.route("/")
 def index():
-    return render_template("index.html")
+    users = User.query.order_by(User.username).all()
+    return render_template("index.html", users=users)
 
 
 @app.route("/logout")

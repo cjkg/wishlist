@@ -1,5 +1,26 @@
 {% extends "base.html" %}
 
 {% block content %}
-{% endblock %}
 
+<div class="max-w-xl mx-auto bg-white border border-gray-200 rounded-xl p-6 shadow-sm">
+
+  <h1 class="text-xl font-semibold text-gray-900 mb-4">
+    Wishlists hosted here
+  </h1>
+
+  <ul class="space-y-2 pl-6 list-disc">
+  {% for user in users %}
+    <li>
+      <a
+        href="/wishlist/{{ user.username }}"
+        class="block px-3 py-2 rounded-md hover:bg-purple-50 hover:text-purple-700 transition"
+      >
+        {{ user.username }}
+      </a>
+    </li>
+  {% endfor %}
+  </ul>
+
+</div>
+
+{% endblock %}

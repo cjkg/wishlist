@@ -1,6 +1,11 @@
 <div id="wish-{{ wish.id }}"
      class="group bg-white border border-gray-200 rounded-xl p-4 flex items-center gap-4
-	    shadow-sm hover:shadow-md transition">
+	    shadow-sm hover:shadow-md transition
+	    duration-200 ease-out
+            htmx-swapping:opacity-0
+            htmx-swapping:scale-95
+            htmx-settling:opacity-100
+            htmx-settling:scale-100">
 
 	<input type="hidden" name="item" value="{{ wish.id }}"/>
 
