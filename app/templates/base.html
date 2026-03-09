@@ -38,17 +38,19 @@
 			</div>
 		</nav>
 
-		{% with messages = get_flashed_messages() %}
-		{% if messages %}
-		<div class="max-w-5xl mx-auto px-4 mt-4">
-			{% for message in messages %}
-			<div class="bg-white border border-gray-200 rounded-md px-4 py-2 text-sm shadow-sm">
-				{{ message }}
-			</div>
-			{% endfor %}
-		</div>
-		{% endif %}
-		{% endwith %}
+		<main class="flex-1">
+			{% block content %}{% endblock %}
+		</main>
 
-		{% block content %}{% endblock %}
+		<footer class="text-center text-sm text-gray-500 py-6">
+			Made with ❤️ by Christopher Gibilisco.
+			<a
+					href="https://github.com/cjkg/wishlist"
+					class="text-purple-600 hover:underline"
+					target="_blank"
+					rel="noopener"
+					>
+					Source.
+			</a>
+		</footer>
 </html>
