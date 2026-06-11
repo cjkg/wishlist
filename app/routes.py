@@ -1,4 +1,4 @@
-from flask import render_template, flash, redirect, request, url_for
+from flask import render_template, flash, redirect, request, url_for, make_response
 from flask_login import current_user, login_required, login_user, logout_user
 from app import app, db
 from app.forms import LoginForm, WishForm
@@ -120,7 +120,13 @@ def create_wish():
         db.session.add(wish)
         db.session.commit()
 
-        return render_template("wishes/_user_wish_row.html", wish=wish)
+        response = make_response(
+            render_template("wishes/_user_wish_row.html", wish=wish)
+        )
+
+        response.headers["HX-Trigger"] = "wishCreated"
+
+        return response
 
     return "", 400
 
