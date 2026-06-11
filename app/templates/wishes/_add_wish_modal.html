@@ -6,7 +6,7 @@
 	    <h2 class="text-lg font-semibold">Add a Wish</h2>
 	    <button
 		hx-target="#modal"
-		hx-on:click="document.getElementById('modal').innerHTML=''"
+    		onclick="document.body.dispatchEvent(new CustomEvent('modalClosed'))"
 		class="text-gray-400 hover:text-gray-700 text-2xl leading-none"
 	    >
 		×
